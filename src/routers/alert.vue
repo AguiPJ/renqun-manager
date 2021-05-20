@@ -4,8 +4,9 @@
 </template>
 
 <script>
+
 export default {
-  name: "alert"
+  name: "alert",
 }
 </script>
 
