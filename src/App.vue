@@ -4,8 +4,8 @@
       智能人群报监控系统
     </ElHeader>
     <ElContainer>
-      <ElAside>
-        <ElMenu>
+      <div class="mr-3 rounded-md" style="width: 200px">
+        <ElMenu class="border-0">
           <div v-for="(page,key) in routes" :key="key">
             <ElSubmenu :index="key + ''" :to="page.path" v-if="page.children">
               <template v-slot:title>
@@ -25,23 +25,21 @@
             </router-link>
           </div>
         </ElMenu>
-      </ElAside>
-      <ElMain class="border-2 border-indigo-50">
+      </div>
+      <div class="border-2 border-indigo-50 container overflow-hidden rounded-md p-2">
         <router-view/>
-      </ElMain>
+      </div>
     </ElContainer>
   </ElContainer>
 </template>
 
 <script>
-import {ElAside, ElContainer, ElHeader, ElMain, ElMenu, ElMenuItem, ElSubmenu} from "element-plus";
 import {ref} from "vue";
 import {routes} from "./routers"
 
 
 export default {
   name: 'App',
-  components: {ElMenu, ElMenuItem, ElContainer, ElHeader, ElMain, ElAside, ElSubmenu},
   setup() {
     let activeIndex = ref('0')
 

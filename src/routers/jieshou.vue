@@ -1,10 +1,10 @@
 <template>
-  <ElTable :data="data" class="w-full">
+  <ElTable :data="tableData.arr" class="w-full">
     <ElTableColumn v-for="item in col" :prop="item.prop" :label="item.name" width="180" :key="item"/>
     <ElTableColumn label="操作">
-      <template v-slot>
-        <ElButton @click="deleteCol" type="primary" class="mr-1">编辑</ElButton>
-        <ElButton type="danger">删除</ElButton>
+      <template #default="scope">
+        <ElButton  type="primary" class="mr-1">编辑</ElButton>
+        <ElButton @click="deleteCol(scope.row._id)" type="danger">删除</ElButton>
       </template>
     </ElTableColumn>
   </ElTable>
@@ -19,13 +19,19 @@
         :total="100">
     </ElPagination>
     <div class="flex-grow"></div>
-    <ElButton plain type="primary" class="mr-5">新增</ElButton>
+    <ElButton plain type="primary" @click="tableData.showAddCard = !tableData.showAddCard" class="mr-5">新增</ElButton>
+
+    <div v-show="tableData.showAddCard">
+      <formTest />
+    </div>
   </div>
 </template>
 
 <script>
-import {ElTable, ElTableColumn} from "element-plus";
-import {ref} from "vue";
+import {reactive, ref} from "vue";
+import {deleteTableData, getTableData} from "@/service/jieshou";
+import formTest from "@/routers/formTest";
+import {ElMessage} from "element-plus";
 
 const col = [
   {name: "接收号码", prop: "phoneNumber"},
@@ -37,45 +43,23 @@ const col = [
 
 export default {
   name: "jieshou",
-  components: {ElTable, ElTableColumn},
+  components:{formTest},
   setup() {
-    const data = [
-      {
-        phoneNumber: randomPhoneNum(),
-        userName: "tom",
-        status: "接收中",
-        createTime: "2020-5-20 09:45",
-        updateTime: "2020-5-20 09:45"
-      },
-      {
-        phoneNumber: randomPhoneNum(),
-        userName: "may",
-        status: "接收中",
-        createTime: "2020-5-20 09:45",
-        updateTime: "2020-5-20 09:45"
-      },
-      {
-        phoneNumber: randomPhoneNum(),
-        userName: "ana",
-        status: "接收中",
-        createTime: "2020-5-20 09:45",
-        updateTime: "2020-5-20 09:45"
-      },
-      {
-        phoneNumber: randomPhoneNum(),
-        userName: "foo",
-        status: "接收中",
-        createTime: "2020-5-20 09:45",
-        updateTime: "2020-5-20 09:45"
-      },
-    ]
+    let tableData = reactive({
+      arr: [],
+      showAddCard: false
+    })
 
-    function randomPhoneNum() {
-      return "135" + Number.parseInt(Math.random() * 1000000000)
-    }
-
-    function deleteCol(index) {
-      console.log(index)
+    function deleteCol(bid) {
+      deleteTableData(bid).then(({code, data}) => {
+        if(code===200){
+          getData()
+          ElMessage.success({
+            message: data,
+            type: 'success'
+          });
+        }
+      })
     }
 
     function handleSizeChange(index) {
@@ -88,8 +72,14 @@ export default {
 
     const currentPage = ref(1)
 
+    function getData() {
+      getTableData().then(({data}) => {
+        tableData.arr = data
+      })
+    }
+    getData()
     return {
-      data, col, deleteCol, handleSizeChange, handleCurrentChange, currentPage,
+      tableData, col, deleteCol, handleSizeChange, handleCurrentChange, currentPage, getData
     }
   }
 }

@@ -34,6 +34,10 @@ export const routes = [
         path: '/统计分析',
         component: () => import("./tongji"),
         name: "统计分析"
+    },{
+        path: '/form',
+        component: () => import("./formTest"),
+        name: "form"
     },
 
 ]

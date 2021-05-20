@@ -5,6 +5,8 @@
 <script>
 import {init} from "echarts";
 import {reactive,} from "vue";
+import {getStatistics} from "@/service/tongji";
+import {dateFormat} from "@/utils/format";
 
 
 export default {
@@ -41,7 +43,7 @@ export default {
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        data: [1,2,3,4,5]
       },
       yAxis: {
         type: 'value'
@@ -51,29 +53,35 @@ export default {
           name: '致远楼',
           type: 'line',
           stack: '总量',
-          data: [120, 210, 100, 220, 90, 190, 150]
+          data: []
         },
         {
           name: '春熙路',
           type: 'line',
           stack: '总量',
-          data: [220, 182, 191, 234, 290, 330, 310]
+          data: []
         },
         {
           name: '长白山',
           type: 'line',
           stack: '总量',
-          data: [150, 232, 201, 154, 190, 330, 410]
+          data: []
         },
       ]
     });
     // // 绘制图表
-    myChart.setOption(option);
 
-    this.myTimer = setInterval(()=>{
+    this.myTimer = setInterval(async ()=>{
+      const {data} = await getStatistics()
       option.series.forEach(i=> {
-        i.data = i.data.reverse()
+        data.series.forEach(item=> {
+          if(item.name === i.name){
+            i.data = item.data
+          }
+        })
+
       })
+      option.xAxis.data = data.times.map(i => dateFormat("hh:mm:ss", new Date(i)))
       myChart.setOption(option)
     }, 2000)
   },
