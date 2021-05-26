@@ -81,7 +81,7 @@ export default {
         })
 
       })
-      option.xAxis.data = data.times.map(i => dateFormat("hh:mm:ss", new Date(i)))
+      option.xAxis.data = data.times.map(i => dateFormat({format:"hh:mm:ss", date:new Date(i)}))
       myChart.setOption(option)
     }, 2000)
   },

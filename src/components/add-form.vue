@@ -15,7 +15,6 @@
 <script>
 import {defineComponent} from "vue";
 import {addTableData} from "@/service/jieshou";
-import {dateFormat} from "@/utils/format";
 import {ElMessage} from "element-plus";
 
 export default defineComponent({
@@ -42,13 +41,9 @@ export default defineComponent({
 
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          const dateTime = dateFormat()
           addTableData({
             userName: this.$data.ruleForm.name,
             phoneNumber: this.$data.ruleForm.phoneNumber,
-            status: "接收中",
-            createTime: dateTime,
-            updateTime: dateTime,
           }).then(({code, data}) => {
             if (code === 200) {
               ElMessage.success({

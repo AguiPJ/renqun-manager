@@ -12,8 +12,8 @@ export const routes = [
         component: () => import("./alert"),
         children: [
             {
-                path: '/jieshou',
-                component: () => import("./jieshou"),
+                path: '/receive',
+                component: () => import("./receive"),
                 name: "接收管理",
             }, {
                 path: '/lishi',
@@ -35,9 +35,9 @@ export const routes = [
         component: () => import("./tongji"),
         name: "统计分析"
     },{
-        path: '/form',
-        component: () => import("./formTest"),
-        name: "form"
+        path: '/table',
+        component: () => import("../components/my-table"),
+        name: "table"
     },
 
 ]

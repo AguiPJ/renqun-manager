@@ -6,14 +6,14 @@ export const timeFormat = str => {
     }
 }
 
-export function dateFormat(format="yyyy-MM-dd hh:mm", date=undefined) {
+export function dateFormat({format = "yyyy-MM-dd hh:mm:ss", date = undefined}) {
     // 传入两个参数  第一个是格式  第二个是时间  默认为空
     let _this
     if(!date){
         // 时间为空就创建当前时间
         _this = new Date();
     }else {
-        _this = date
+        _this = new Date(date)
     }
     let args = {
         // 获取时间的各个参数  年月日时分秒 以及相应的处理 如：月要+1
@@ -38,4 +38,3 @@ export function dateFormat(format="yyyy-MM-dd hh:mm", date=undefined) {
     return format
 }
 
-dateFormat("yyyy-MM-dd hh:mm:ss:S")
